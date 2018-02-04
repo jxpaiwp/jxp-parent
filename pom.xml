@@ -10,6 +10,8 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>common</module>
+        <module>ssm</module>
+        <module>spring</module>
     </modules>
 
     <!--集中版本号-->

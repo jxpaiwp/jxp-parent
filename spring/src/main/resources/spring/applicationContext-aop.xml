@@ -1,0 +1,61 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+    
+    <!--spring 06start-->
+    <!--<bean id="pesonDao" class="com.jxp.spring06.aop.PersonDaoImpl"/>-->
+    <!--<bean id="transaction" class="com.jxp.spring06.aop.Transaction"/>-->
+    <!--<aop:config>-->
+        <!--&lt;!&ndash;切入点表达式 -->
+            <!--确定目标类-->
+                    <!--关键之                 返回值类型       方法所在的包              方法名         参数          异常-->
+            <!--express(modifiers-pattern? ret-type-pattern declaring-type-pattern? name-pattern(param-pattern)throws-pattern?)-->
+                    <!--public              void                java.lang.Object        wait            long     java.lang.InterruptedException-->
+            <!--例子:execution(public * * (..))  任意的公共方法-->
+                <!--execution(* set* (..))      以set开头的方法-->
+                <!--execution(* com.xyz.service.*.*(..)) com.xyz.service下的包任意类的任意方法-->
+                <!--execution(* com.xyz.service..*.*(..)) com.xyz.service下包及子包的所有类的所有方法-->
+                <!--execution(* com.xyz.*.service..*.*(..)) com.xyz.下的任意包下的service包下的所有类的所有方法            -->
+        <!--&ndash;&gt;-->
+        <!---->
+        <!--<aop:pointcut id="person" expression="execution(* com.jxp.spring06.aop.PersonDaoImpl.*(..))"></aop:pointcut>-->
+        <!--&lt;!&ndash;ref 指向切面&ndash;&gt;-->
+        <!--<aop:aspect ref="transaction">-->
+            <!--<aop:before method="beginTransaction" pointcut-ref="person"/>-->
+            <!--<aop:after-returning method="commit" pointcut-ref="person"/>-->
+        <!--</aop:aspect>-->
+        <!---->
+    <!--</aop:config>-->
+    <!--spring 06end-->
+    
+    <!--spring07 start -->
+    <bean id="personDao" class="com.jxp.spring07.aop.xml.advise.PersonDaoImpl"/>
+    <bean id="transaction" class="com.jxp.spring07.aop.xml.advise.Transaction"/>
+    <aop:config>
+        <aop:pointcut id="perform" 
+                      expression="execution(* com.jxp.spring07.aop.xml.advise.PersonDaoImpl.*(..))"/>
+        <!--指向切面-->
+        <aop:aspect ref="transaction">
+            <aop:before method="beginTransaction" pointcut-ref="perform"/>
+            <aop:after-returning method="commit" pointcut-ref="perform" returning="val"/>
+            <!--最终通知-->
+            <aop:after method="finallyMethod" pointcut-ref="perform"/>
+            <aop:after-throwing method="throwingMethod" pointcut-ref="perform" throwing="ex"/>
+            <!--
+                环绕通知:
+                    环绕通知和前置后置通知的区别:
+                        前置通知和后置通知能在目标的方法前面和后面加代码,
+                        但是不能控制目标方法的执行
+                    -->
+            <aop:around method="aroundMethod" pointcut-ref="perform"/>
+        </aop:aspect>
+    </aop:config>
+    <!--spring07 end -->
+    
+    
+</beans>
